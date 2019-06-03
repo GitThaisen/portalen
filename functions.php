@@ -49,7 +49,8 @@ add_filter('wp_title', function ($title) {
 add_filter('private_title_format', 'nrk_title_status', 10, 2);
 add_filter('protected_title_format', 'nrk_title_status', 10, 2);
 function nrk_title_status ($text, $post) {
-  return '<svg style="width:1rem;height:1rem;color:#252627;margin-right:5px" aria-label="' . esc_attr(get_post_status($post)) .'" viewBox="0 0 20 20"><path d="M10.02 5.4c1.26 0 2.4.53 3.2 1.37l-2.15 1.3A2.1 2.1 0 0 1 10.74 7a3 3 0 0 0-3.67 3.48l-1.32.8a4.5 4.5 0 0 1 4.26-5.87zm-1.93 6.8l-1.33.8h.01l-2.25 1.36-3 1.8a1 1 0 0 1-1.37-.34 1 1 0 0 1 .33-1.38l2.24-1.34C1.18 11.86.25 10.67.25 10.67a1.38 1.38 0 0 1 0-1.6S4.3 3.9 9.68 3.9c2.02 0 3.94.75 5.55 1.67l3.2-1.93a1 1 0 1 1 1.03 1.72l-2.37 1.42.01.01-2.82 1.7v-.01l-1.35.8v.02L8.1 12.2zm1.91.7c-.3 0-.6-.06-.88-.14l3.82-2.3A3 3 0 0 1 10 12.9zm9.72-3.78c.37.41.37 1.1 0 1.51 0 0-4.68 5.27-10.05 5.27-1.5 0-2.88-.41-4.11-1l2.03-1.22a4.5 4.5 0 0 0 6.93-3.78c0-.13-.03-.25-.04-.37l3.46-2.08c1.11.92 1.78 1.67 1.78 1.67z" fill-rule="evenodd"/></svg> %s';
+  if (is_admin() || wp_doing_ajax() || (defined('REST_REQUEST') && constant('REST_REQUEST'))) return $text;
+  return '<i class="post-status-icon" aria-label="' . esc_attr(get_post_status($post)) .'"></i>%s';
 }
 
 // Show all pages and allow private parents
